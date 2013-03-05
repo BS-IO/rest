@@ -23,6 +23,12 @@ The Rest plugin is my first attempt at creating a restful api framework accordin
 
 I tried to keep things as simple as possible, so everyone can use this plugin on top of their existing system. Please note this is an alpha version, so it is developed quite loose & I haven't spent much time optimizing stuff. If you find things that need improvement, please let me know.
 
+Things NOT included
+====
+- administration views
+- tests
+
+
 Installation
 ====
 
