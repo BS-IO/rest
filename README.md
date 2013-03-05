@@ -48,7 +48,11 @@ if 'requireSignature' is set to TRUE, all calls need to be signed with an (appli
 Example: 
 
 http://example.com/rest/0.1/info.json?key=$key&signature=$signature
+
 $key = 'applicationKey';
+
 $secret = 'applicationSecret';
+
 $requestedUrl = 'http://example.com/rest/0.1/info.json'
+
 $signature = hash_hmac("sha256", urlencode($requestUrl), $secret);
