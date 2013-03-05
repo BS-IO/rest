@@ -43,6 +43,12 @@ For easy testing, I'm used to defining environment settings in my config (e.g. d
 
 Authentication
 ====
-if 'requireSignature' is set to TRUE, all calls need to be signed with an (application-)key and a secret. This secret needs to generated clientside by the following function: hash_hmac("sha256", urlencode($_SERVER['REDIRECT_SCRIPT_URI']), $secret);
+if 'requireSignature' is set to TRUE, all calls need to be signed with an (application-)key and a secret. This secret needs to generated clientside by the following function: hash_hmac("sha256", urlencode($requestUrl), $secret);
 
-Example: http://example.com/rest/0.1/info.json?key=abc&signature=xyz
+Example: 
+
+http://example.com/rest/0.1/info.json?key=$key&signature=$signature
+$key = 'applicationKey';
+$secret = 'applicationSecret';
+$requestedUrl = 'http://example.com/rest/0.1/info.json'
+$signature = hash_hmac("sha256", urlencode($requestUrl), $secret);
