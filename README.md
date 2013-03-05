@@ -60,13 +60,20 @@ if 'requireSignature' is set to TRUE, all calls need to be signed with an (appli
 
 http://example.com/rest/0.1/info.json?key=$key&signature=$signature
 
-$key = 'applicationKey';
+This consists of: 
 
-$secret = 'applicationSecret';
-
+```php
 $requestedUrl = 'http://example.com/rest/0.1/info.json'
 
+$secret = 'your app-secret';
+
+$key = 'your app-key';
+
 $signature = hash_hmac("sha256", urlencode($requestUrl), $secret);
+
+```
+
+Also note, that the key and signature can be set in the header as well. This will override the parameters set in the url. 
 
 ## Example usage
 

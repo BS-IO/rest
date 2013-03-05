@@ -78,6 +78,13 @@ class RestController extends RestAppController {
         # Define possible parameters
         $api['parameters'] = $this->params->query;
 
+        # If the header has signature and key, override the api['parameters']-value
+        if (isset($_SERVER['HTTP_KEY']))
+            $api['parameters']['key'] = $_SERVER['HTTP_KEY'];
+
+        if (isset($_SERVER['HTTP_SIGNATURE']))
+            $api['parameters']['signature'] = $_SERVER['HTTP_SIGNATURE'];
+
         # Check if we need to suppress the response codes
         if (isset($api['parameters']['suppress_response_code'])) {
             unset($api['parameters']['suppress_response_code']);
@@ -115,7 +122,7 @@ class RestController extends RestAppController {
                 # Check the key and token
                 $apiAccess = true;
                 if (Configure::read('Rest.requireSignature')) {
-                    if (!isset($api['parameters']['key']) || !isset($api['parameters']['signature'])) {
+                    if (!isset($api['parameters']['key']) || !isset($api['parameters']['signature']))  {
                         # Throw an unauthorized error
                         $result['status'] = $this->Error->throwError(4001, 'missing required key or signature');
                         $apiAccess = false;
@@ -146,6 +153,10 @@ class RestController extends RestAppController {
                         $apiResult = $controller->$method($api);
                     }
 
+                    # if we don't have any results, return an empty array
+                    if(empty($apiResult['return']))
+                        $apiResult['return'] = array();
+
                     # filter the results if we only want specific field (only 1 level)
                     if (isset($api['parameters']['fields'])) {
                         $fieldset = array_map('trim', explode(",", $api['parameters']['fields']));
@@ -154,6 +165,7 @@ class RestController extends RestAppController {
                                 unset($apiResult['return'][$key]);
                         }
                     }
+
                     $result['return'] = $apiResult['return'];
 
                     if (!empty($apiResult['status']))
