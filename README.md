@@ -40,3 +40,9 @@ Config
 Basic authentication is turned off by default. You can turn it on in the bootstrap by setting requireSignature to *true*.
 
 For easy testing, I'm used to defining environment settings in my config (e.g. define('ENV_DEV', 'localhost');). This can be done in the bootstrap as well. As I have built in security that never shows the call signature on a live server, but does on a test or staging server, please enter the appropriate values in the bootstrap file. If you'd like, you can remove the specific token info by commenting out lines 127 & 128 in RestController.php.
+
+Authentication
+====
+if 'requireSignature' is set to TRUE, all calls need to be signed with an (application-)key and a secret. This secret needs to generated clientside by the following function: hash_hmac("sha256", urlencode($_SERVER['REDIRECT_SCRIPT_URI']), $secret);
+
+Example: http://example.com/rest/0.1/info.json?key=abc&signature=xyz
