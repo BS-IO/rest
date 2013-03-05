@@ -27,7 +27,7 @@ I tried to keep things as simple as possible, so everyone can use this plugin on
 
 The architecture of the system is straightforward.
 * RestController: containing a dispatch function that calls the right version of the api and does some errorhandling.
-* Api01Controller: version 0.1 of the actual API-controller. Here you can add all the functions you need. I've added two example functions. Note that the method for the function is added after the function name, using an underscore and the method (_get, _put, _update, _delete). 
+* Api01Controller: version 0.1 of the actual API-controller. Here you can add all the functions you need. I've added two example functions. Note that the method for the function is added after the function name, using an underscore and the method (_get, _put, _update, _delete). I'm choosing to have a dedicated controller for the functions I want to have available in the API, as this makes for easier versioning (and I have fat models anyway)
 * To enable versioning of you api, just create Api02Controller for version 0.2, etc. 
 
 ## Things NOT included
