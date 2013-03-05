@@ -3,7 +3,7 @@ Rest Plugin
 
 A restful plugin for CakePHP (2.3)
 
-The Rest plugin is my first attempt at creating a restful api framework according to some best practices as defined by Apigee:
+The Rest plugin is my first attempt at creating a restful api framework according to some best practices as defined by Apigee (Read more on that here: http://blog.apigee.com/detail/announcement_new_ebook_on_web_api_design/):
 
 1) it uses nouns
 
@@ -32,7 +32,9 @@ Things NOT included
 Installation
 ====
 
-Just copy the rest plugin and load it from the apps bootstrap file. Also, be sure to run the scheme and create a test application.
+Just copy the rest plugin and load it from the apps bootstrap file using: CakePlugin::load('Rest', array('bootstrap' => true, 'routes' => true));
+
+Also, be sure to run the scheme and create a test application.
 
 Config
 ====
@@ -56,3 +58,19 @@ $secret = 'applicationSecret';
 $requestedUrl = 'http://example.com/rest/0.1/info.json'
 
 $signature = hash_hmac("sha256", urlencode($requestUrl), $secret);
+
+Example usage
+====
+The framework is built up around a simple routing system: *version*/*noun*.*output*
+
+http://example.com/rest/0.1/object.json -> output in json
+http://example.com/rest/0.1/object/1.xml -> output of record 1 in xml
+
+Functionality is determined by the used http_method: GET/POST/PUT/DELETE
+
+Also, there are some basic parameters you can use in the url (I know, this is not truly restful) for your convenience:
+
+* ?debug: returns debug information
+* ?suppress_response_code: always returns 200/OK header
+* ?key=xxxx&signature=yyyyy: a signed request
+* ?fields=id,name,xxxx: a partial selection of the fields you are requesting
