@@ -89,8 +89,28 @@ Also, there are some basic parameters you can use in the url (I know, this is no
 
 * ?debug: returns debug information
 * ?suppress_response_code: always returns 200/OK header
-* ?key=xxxx&signature=yyyyy: a signed request
+* ?key=xxxx&signature=yyyyy: a signed request (these can also be set in the header)
 * ?fields=id,name,xxxx: a partial selection of the fields you are requesting
+
+## Advanced usage
+
+I have created a little component to create simple queries right from the url.
+
+* ?<fieldname>=foo : WHERE fieldname = foo
+* ?<fieldname>=foo* : WHERE fieldname LIKE foo%
+* ?<fieldname>=(1,3,5) : WHERE fieldname IN (1,3,5)
+* ?<fieldname>=[1,5] : WHERE fieldname BETWEEN 1 AND 5
+* ?<fieldname=>1 : WHERE fieldname > 1
+* ?<fieldname=>=1 : WHERE fieldname >= 1
+* ?<fieldname>=<1 : WHERE fieldname < 1
+* ?<fieldname>=<=1 : WHERE fieldname <= 1
+
+You can combine these by setting the operator value. It defaults to AND, but ?operator=OR sets it to OR.
+
+http://example.com/rest/0.1/object.json?id=[1,5]&status=active&fields=name
+
+This gets all objects with id between 1 and 5 and an active status. Then returns the names of those objects in json format.
+
 
 ## License
 
