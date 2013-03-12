@@ -96,14 +96,14 @@ Also, there are some basic parameters you can use in the url (I know, this is no
 
 I have created a little component to create simple queries right from the url.
 
-* ?<fieldname>=foo : WHERE fieldname = foo
-* ?<fieldname>=foo* : WHERE fieldname LIKE foo%
-* ?<fieldname>=(1,3,5) : WHERE fieldname IN (1,3,5)
-* ?<fieldname>=[1,5] : WHERE fieldname BETWEEN 1 AND 5
-* ?<fieldname=>1 : WHERE fieldname > 1
-* ?<fieldname=>=1 : WHERE fieldname >= 1
-* ?<fieldname>=<1 : WHERE fieldname < 1
-* ?<fieldname>=<=1 : WHERE fieldname <= 1
+* ?fieldname=foo : WHERE fieldname = foo
+* ?fieldname=foo* : WHERE fieldname LIKE foo%
+* ?fieldname=(1,3,5) : WHERE fieldname IN (1,3,5)
+* ?fieldname=[1,5] : WHERE fieldname BETWEEN 1 AND 5
+* ?fieldname=>1 : WHERE fieldname > 1
+* ?fieldname=>=1 : WHERE fieldname >= 1
+* ?fieldname=<1 : WHERE fieldname < 1
+* ?fieldname=<=1 : WHERE fieldname <= 1
 
 You can combine these by setting the operator value. It defaults to AND, but ?operator=OR sets it to OR.
 
