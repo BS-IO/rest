@@ -35,13 +35,14 @@ class RestController extends RestAppController {
 
 
     public function index() {
-
     }
 
     /**
      * REST api dispatcher
      */
     public function dispatch() {
+        $header = $this->getHeaderInformation($_SERVER);
+
         # Load the appropriate version of the api
         $api['version'] = $this->params['version'];
 
@@ -79,11 +80,11 @@ class RestController extends RestAppController {
         $api['parameters'] = $this->params->query;
 
         # If the header has signature and key, override the api['parameters']-value
-        if (isset($_SERVER['HTTP_KEY']))
-            $api['parameters']['key'] = $_SERVER['HTTP_KEY'];
+        if (isset($header['HTTP_KEY']))
+            $api['parameters']['key'] = $header['HTTP_KEY'];
 
-        if (isset($_SERVER['HTTP_SIGNATURE']))
-            $api['parameters']['signature'] = $_SERVER['HTTP_SIGNATURE'];
+        if (isset($header['HTTP_SIGNATURE']))
+            $api['parameters']['signature'] = $header['HTTP_SIGNATURE'];
 
         # Check if we need to suppress the response codes
         if (isset($api['parameters']['suppress_response_code'])) {
@@ -91,8 +92,8 @@ class RestController extends RestAppController {
             $api['suppress_response_code'] = true;
         }
 
-        # Check if we are debugging
-        if (isset($api['parameters']['debug'])) {
+        # Check if we are debugging: ?debug should be set (or debug should be defined in header)
+        if (isset($api['parameters']['debug']) || isset($header['HTTP_DEBUG'])) {
             unset($api['parameters']['debug']);
             $api['debug'] = true;
 
@@ -177,7 +178,7 @@ class RestController extends RestAppController {
         }
 
         # Set the header based on the status code, except when we are suppressing header codes..
-        if (isset($api['suppress_response_code'])) {
+        if (isset($api['suppress_response_code']) || isset($header['HTTP_SUPPRESS_RESPONSE_CODE'])) {
             $this->response->statusCode(200);
         } else {
             $this->response->statusCode($result['status']['http']);
@@ -228,6 +229,23 @@ class RestController extends RestAppController {
 
         # return the hash from the data
         return hash_hmac("sha256", urlencode($_SERVER['REDIRECT_SCRIPT_URI']), $secret);
+    }
+
+
+    /**
+     * Get all header information out of an array (like $_SERVER)
+     * @param array $header
+     * @return array with header details
+     */
+    private function getHeaderInformation($header = array()) {
+        $result = array();
+        foreach ($header as $key => $value) {
+            $found = strpos($key, 'HTTP_');
+            if ($found !== false) {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
     }
 
 }

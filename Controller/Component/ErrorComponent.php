@@ -24,6 +24,7 @@ class ErrorComponent extends Component {
         1002 => array('http' => 500, 'reason' => 'Unknown output file'),
         1003 => array('http' => 500, 'reason' => 'Unrecognised method'),
         4001 => array('http' => 401, 'reason' => 'Unauthorized'),
+        4004 => array('http' => 404, 'reason' => 'Not found'),
     );
 
     /**
